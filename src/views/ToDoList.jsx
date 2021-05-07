@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { nanoid } from "nanoid";
-import List from "./List";
-import Form from "./Form";
+import List from "../components/List";
+import Form from "../components/Form";
 
 export const ToDoList = () => {
   const [todo, setTodo] = useState({
@@ -60,25 +60,30 @@ export const ToDoList = () => {
 
   return (
     <div className="row">
-      <div className="col-6">
-        {error && (
-          <div className="alert alert-danger text-center" role="alert">
-            Complete todos los campos
+      <div className="container">
+        <div className="mt-5">
+          <h1>Puestos de Trabajo</h1>
+          <div className="col-6">
+            {error && (
+              <div className="alert alert-danger text-center" role="alert">
+                Complete todos los campos
+              </div>
+            )}
+            <Form
+              handleSubmit={handleSubmit}
+              updateState={updateState}
+              puesto={puesto}
+              empresa={empresa}
+              ciudad={ciudad}
+              pais={pais}
+            />
           </div>
-        )}
-        <Form
-          handleSubmit={handleSubmit}
-          updateState={updateState}
-          puesto={puesto}
-          empresa={empresa}
-          ciudad={ciudad}
-          pais={pais}
-        />
-      </div>
-      <div className="col-6">
-        { todos.map((td) => ( 
-          <List td={td} handleDelete={handleDelete} />
-        ))}
+          <div className="col-6">
+            { todos.map((td) => ( 
+              <List td={td} handleDelete={handleDelete} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
