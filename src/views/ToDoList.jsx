@@ -1,90 +1,51 @@
-import { useState } from "react";
+import React from 'react';
+import {List} from '../components/List'; 
+import {Form} from '../components/Form';
 
-import { nanoid } from "nanoid";
-import List from "../components/List";
-import Form from "../components/Form";
+export class ToDoList extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      jobs: [
+        {puesto: 'Frontend JS', empresa: 'ABC', ciudad: 'La Rioja', pais: 'Argentina'},
+      ]
+    };
+  }
 
-export const ToDoList = () => {
-  const [todo, setTodo] = useState({
-    puesto: "",
-    empresa: "",
-    ciudad: "",
-    pais: "",
-  });
-  const [todos, setTodos] = useState([]);
-  const [error, setError] = useState(false);
-
-  const { puesto, empresa, ciudad, pais } = todo;
-
-  const updateState = (e) => {
-    setTodo({
-      ...todo,
-      [e.target.name]: e.target.value,
+  onNewJob = (evt, newJob) => {
+    this.setState({
+      jobs: [...this.state.jobs, newJob]
     });
-  };
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (
-      puesto.trim() === "" ||
-      empresa.trim() === "" ||
-      ciudad.trim() === "" ||
-      pais.trim() === ""
-    ) {
-      setError(true);
-      return;
-    }
-    setError(false);
-    setTodos([
-      ...todos,
-      {
-        id: nanoid(),
-        puesto,
-        empresa,
-        ciudad,
-        pais,
-      },
-    ]);
-    setTodo({
-      puesto: "",
-      empresa: "",
-      ciudad: "",
-      pais: "",
+  deleteJob = (id_del) => {
+    this.setState({
+      jobs: this.state.jobs.filter((job, id) => id !== id_del)
     });
-  };
+  }
 
-  const handleDelete = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
-  return (
-    <div className="row">
-      <div className="container">
-        <div className="mt-5">
-          <h1>Puestos de Trabajo</h1>
-          <div className="col-6">
-            {error && (
-              <div className="alert alert-danger text-center" role="alert">
-                Complete todos los campos
-              </div>
-            )}
-            <Form
-              handleSubmit={handleSubmit}
-              updateState={updateState}
-              puesto={puesto}
-              empresa={empresa}
-              ciudad={ciudad}
-              pais={pais}
-            />
-          </div>
-          <div className="col-6">
-            { todos.map((td) => ( 
-              <List td={td} handleDelete={handleDelete} />
-            ))}
+  render() {
+    return (
+      <div className="row">
+        <div className="container">
+          <div className="mt-5">
+            <h1>Puestos de Trabajo</h1>
+            <div className="col-6">
+              <Form onNewJobSubmit={this.onNewJob}></Form>
+            </div>
+            <div className="col-6">
+                <ul>
+                  {this.state.jobs.map((job, id) => { 
+                    return <List key={id} elem={job} onDelete={() => this.deleteJob(id)}></List> 
+                  })}
+                </ul>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+
+  componentDidMount() {
+  }
+}

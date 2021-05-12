@@ -1,16 +1,12 @@
 import React from 'react';
 
 export class Cities extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      someKey: 'someValue'
-    };
-  }
-
   render() {
-    return <p>{this.state.someKey}</p>;
+    return <div>
+      <h4>Cities</h4>
+      <p>{ JSON.stringify(this.props.ciudades) }</p>
+      <p>{ JSON.stringify(this.props.paises) }</p>
+    </div>
   }
-
 }
 

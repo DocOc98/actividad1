@@ -1,20 +1,27 @@
-const List = ({ td, handleDelete }) => {
+import React from 'react';
+
+export class List extends React.Component {
+  constructor() {
+    super();
+  }
+
+  render() {
     return (
-      <ul class="list-group" key={td.id}>
-        <li className="list-group-item mb-3">
+        <li className="list-group-item mb-3" key={this.props.id}>
           <h4>
-            {td.puesto}
+            {this.props.elem.puesto}
           </h4>
           <h6>
-            {td.empresa}
+            {this.props.elem.empresa}
           </h6>
           <p>
-            {td.ciudad}, {td.pais}
+            {this.props.elem.ciudad}, {this.props.elem.pais}
           </p>
-          <button onClick={() => handleDelete(td.id)} className="btn btn-danger float-right">Eliminar</button>
+          <button onClick={() => this.props.onDelete(this.props.id)} className="btn btn-danger">Eliminar</button>
         </li>
-      </ul>
     );
-  };
-  
-  export default List;
+  }
+
+  componentDidMount() {
+  }
+}
