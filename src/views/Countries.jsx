@@ -7,10 +7,12 @@ export class Countries extends React.Component {
       <ul>
         {
           this.props.paises.map(pais => {
-            return <li key={pais}>
+            return <li className="list-group-item mb-3" key={pais}>
+            <h5>
               {pais}
-              <button onClick={() => this.props.delete(pais)}>Eliminar</button>
-            </li>
+            </h5>
+            <button onClick={() => this.props.delete(pais)} className="btn btn-danger">Eliminar</button>
+          </li>
           })
         }
       </ul>

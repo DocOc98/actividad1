@@ -18,7 +18,8 @@ export class App extends React.Component {
         {nombre: 'La Rioja', pais: 0},
         {nombre: 'La Plata', pais: 0},
         {nombre: 'Benevento', pais: 1}
-      ]
+      ],
+      companias: [{nombre: 'Ritex SRL', ciudad: 'La Rioja'}]
     }
   }
 
@@ -34,8 +35,8 @@ export class App extends React.Component {
         <NavBar></NavBar>
         <Switch>
           <Route path="/" exact component={ToDoList}></Route>
-          <Route path="/companies" exact component={Companies}></Route>
-          <Route path="/cities" exact render={() => <Cities ciudades={this.state.ciudades} paises={this.state.paises}></Cities>}></Route>
+          <Route path="/companies" exact render={(props)=> <Companies empresas={this.state.companias} ciudades={this.state.ciudades}></Companies>}></Route>
+          <Route path="/cities" exact render={(props) => <Cities ciudades={this.state.ciudades} paises={this.state.paises}></Cities>}></Route>
           <Route path="/countries" exact render={(props)=> <Countries paises={this.state.paises}></Countries>}></Route>
           <Route component={NotFound}></Route>
         </Switch>
