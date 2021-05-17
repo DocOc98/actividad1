@@ -7,7 +7,7 @@ export class List extends React.Component {
 
   render() {
     return (
-        <li className="list-group-item mb-3" key={this.props.id}>
+        <li className="list-group-item mb-3" key={this.id}>
           <h4>
             {this.props.elem.puesto}
           </h4>
@@ -17,7 +17,7 @@ export class List extends React.Component {
           <p>
             {this.props.elem.ciudad}, {this.props.elem.pais}
           </p>
-          <button onClick={() => this.props.onDelete(this.props.id)} className="btn btn-danger">Eliminar</button>
+          <button onClick={() => this.props.onDelete(this.id)} className="btn btn-danger">Eliminar</button>
         </li>
     );
   }
