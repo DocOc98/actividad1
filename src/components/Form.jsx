@@ -6,9 +6,9 @@ export class Form extends React.Component {
     this.state = {
         newJob: {
             puesto: '',
-            empresa: '',
-            ciudad: '',
-            pais: 'Argentina'
+            empresa: 0,
+            ciudad: 0,
+            pais: 0
         }
     };
   }
@@ -55,10 +55,7 @@ export class Form extends React.Component {
 
   handleNewJobSubmit = (evt) => {
     evt.preventDefault();
-    if( this.state.newJob.puesto.trim() === '' ||
-        this.state.newJob.empresa.trim() === '' ||
-        this.state.newJob.ciudad.trim() === '' ||
-        this.state.newJob.pais.trim() === ''
+    if( this.state.newJob.puesto.trim() === '' 
     ){
         return false;
     }
@@ -71,11 +68,33 @@ export class Form extends React.Component {
           <label>Name:</label>
           <input type="text" name="puesto" className="form-control" placeholder="Nombre del Puesto" required value={this.state.newJob.puesto} onChange={(e) => this.handleNewJobName(e)}></input>
           <label>Company:</label>
-          <input type="text" name="empresa" className="form-control" placeholder="Ingresa empresa" required value={this.state.newJob.empresa} onChange={(e) => this.handleNewJobCompany(e)}></input>
+          <select className="form-control" onChange={(e) => this.handleNewJobCompany(e)}>
+            {
+              this.props.empresas.map((empresa, index)=>{
+                if(empresa.ciudad==this.state.newJob.ciudad){
+                  return <option key={index} value={index}>{empresa.nombre}</option>
+                }
+              })
+            }
+          </select>
           <label>City:</label>
-          <input type="text" name="ciudad" className="form-control" placeholder="Ingresa ciudad" required value={this.state.newJob.ciudad} onChange={(e) => this.handleNewJobCity(e)}></input>
+          <select className="form-control" onChange={(e) => this.handleNewJobCity(e)}>
+            {
+              this.props.ciudades.map((ciudad, index)=>{
+                if(ciudad.pais==this.state.newJob.pais){
+                  return <option key={index} value={index}>{ciudad.nombre}</option>
+                }
+              })
+            }
+          </select>
           <label>Country:</label>
-          <input type="text" name="pais" className="form-control" placeholder="Ingresa pais" required value={this.state.newJob.pais} onChange={(e) => this.handleNewJobCountry(e)}></input>
+          <select className="form-control" onChange={(e) => this.handleNewJobCountry(e)}>
+            {
+              this.props.paises.map(pais=>{
+                return <option key={pais}>{pais}</option>
+              })
+            }
+          </select>
           <button type="submit" className="btn btn-primary btn-success">Agregar</button>
         </form>
     );

@@ -15,11 +15,11 @@ export class App extends React.Component {
     this.state = {
       paises: ['Argentina', 'Italia', 'Uruguay', 'United Kingdom'],
       ciudades: [
-        {nombre: 'La Rioja', pais: 'Argentina'},
-        {nombre: 'La Plata', pais: 'Argentina'},
-        {nombre: 'Benevento', pais: 'Italia'}
+        {nombre: 'La Rioja', pais: 0},
+        {nombre: 'La Plata', pais: 0},
+        {nombre: 'Benevento', pais: 1}
       ],
-      companias: [{nombre: 'Ritex SRL', ciudad: 'La Rioja'}]
+      companias: [{nombre: 'Ritex SRL', ciudad: 0}]
     }
   }
 
@@ -60,8 +60,9 @@ export class App extends React.Component {
       <Router>
         <NavBar></NavBar>
         <Switch>
-          <Route path="/" exact component={ToDoList}></Route>
-          <Route path="/companies" exact render={(props)=> <Companies delete={this.deleteCompany} addCompany={this.NewCompany} empresas={this.state.companias} ciudades={this.state.ciudades}></Companies>}></Route>
+          
+          <Route path="/" exact render={(props)=><ToDoList paises={this.state.paises} empresas={this.state.companias} ciudades={this.state.ciudades}></ToDoList>}></Route>
+          <Route path="/companies" exact render={(props)=> <Companies delete={this.deleteCompany} addCompany={this.NewCompany} empresas={this.state.companias} ciudades={this.state.ciudades} paises={this.state.paises}></Companies>}></Route>
           <Route path="/cities" exact render={(props) => <Cities delete={this.deleteCity} addCity={this.NewCity} ciudades={this.state.ciudades} paises={this.state.paises}></Cities>}></Route>
           <Route path="/countries" exact render={(props)=> <Countries delete={this.deleteCountry} addCountry={this.NewCountry} paises={this.state.paises}></Countries>}></Route>
           <Route component={NotFound}></Route>

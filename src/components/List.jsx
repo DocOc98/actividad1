@@ -12,11 +12,27 @@ export class List extends React.Component {
             {this.props.elem.puesto}
           </h4>
           <h6>
-            {this.props.elem.empresa}
+            {
+              this.props.empresas.map((compania, index)=>{
+                if(index==this.props.elem.empresa){
+                  return <p>{compania.nombre}</p>
+                }
+              })
+            }
           </h6>
-          <p>
-            {this.props.elem.ciudad}, {this.props.elem.pais}
-          </p>
+            {
+              this.props.ciudades.map((ciudad, index)=>{
+                if(index==this.props.elem.ciudad){
+                  return <p>{ciudad.nombre}, 
+                    {
+                      (()=>{
+                        return this.props.paises[ciudad.pais];
+                      })()
+                    }
+                  </p>
+                }
+              })
+            }
           <button onClick={() => this.props.onDelete(this.id)} className="btn btn-danger">Eliminar</button>
         </li>
     );
