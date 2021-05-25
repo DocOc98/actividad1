@@ -1,0 +1,16 @@
+{
+    "jobs":[
+    {
+      "id": 1,
+      "position": "Desarrollador FullStack JS",
+      "description": "Desarrollador Backend con NodeJS y FrontEnd con React",
+      "organizationId": 1
+    },
+    {
+      "position": "Desarrollador Backend",
+      "description": "Desarrollador Backend con conocimientos en Kotlin",
+      "organizationId": 1,
+      "id": 2
+    }
+  ]
+}

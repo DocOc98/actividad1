@@ -5,7 +5,7 @@ export class Form extends React.Component {
     super();
     this.state = {
         newJob: {
-            puesto: '',
+            position: '',
             empresa: 0,
             ciudad: 0,
             pais: 0
@@ -17,7 +17,7 @@ export class Form extends React.Component {
     this.setState(prevState => ({
         newJob: {
           ...prevState.newJob,
-          puesto: evt.target.value
+          position: evt.target.value
         }
       })
     );
@@ -55,7 +55,7 @@ export class Form extends React.Component {
 
   handleNewJobSubmit = (evt) => {
     evt.preventDefault();
-    if( this.state.newJob.puesto.trim() === '' 
+    if( this.state.newJob.position.trim() === '' 
     ){
         return false;
     }
@@ -66,7 +66,7 @@ export class Form extends React.Component {
     return (
         <form onSubmit={this.handleNewJobSubmit}>
           <label>Name:</label>
-          <input type="text" name="puesto" className="form-control" placeholder="Nombre del Puesto" required value={this.state.newJob.puesto} onChange={(e) => this.handleNewJobName(e)}></input>
+          <input type="text" name="position" className="form-control" placeholder="Nombre del Puesto" required value={this.state.newJob.position} onChange={(e) => this.handleNewJobName(e)}></input>
           <label>Company:</label>
           <select className="form-control" onChange={(e) => this.handleNewJobCompany(e)}>
             {

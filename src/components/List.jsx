@@ -7,7 +7,7 @@ export class List extends React.Component {
 
   render() {
     return (
-        <li className="list-group-item mb-3" key={this.id}>
+        /*<li className="list-group-item mb-3" key={this.id}>
           <h4>
             {this.props.elem.puesto}
           </h4>
@@ -21,6 +21,37 @@ export class List extends React.Component {
             }
           </h6>
             {
+              this.props.ciudades.map((ciudad, index)=>{
+                if(index==this.props.elem.ciudad){
+                  return <p>{ciudad.nombre}, 
+                    {
+                      (()=>{
+                        return this.props.paises[ciudad.pais];
+                      })()
+                    }
+                  </p>
+                }
+              })
+            }
+          <button onClick={() => this.props.onDelete(this.id)} className="btn btn-danger">Eliminar</button>
+        </li>*/
+        <li className="list-group-item mb-3" key={this.id}>
+          <h4>
+            {this.props.elem.position}
+          </h4>
+          <h6>
+            {
+              this.props.empresas.map((compania, index)=>{
+                if(index==this.props.elem.organizationId){
+                  return <p>{compania.nombre}</p>
+                }
+              })
+            }
+          </h6>
+          <p>
+            {this.props.elem.description}
+          </p>
+          {
               this.props.ciudades.map((ciudad, index)=>{
                 if(index==this.props.elem.ciudad){
                   return <p>{ciudad.nombre}, 
