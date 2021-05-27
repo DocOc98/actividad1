@@ -1,4 +1,5 @@
 import React from 'react';
+import { getCountries, getPlaces, getOrganizations } from '../clients/todoClient';
 
 export class Form extends React.Component {
   constructor() {
@@ -6,10 +7,15 @@ export class Form extends React.Component {
     this.state = {
         newJob: {
             position: '',
-            empresa: 0,
-            ciudad: 0,
-            pais: 0
-        }
+            description: '',
+            empresa: 1,
+            ciudad: 1,
+            pais: 1
+        },
+        countriesfromAPI: [],
+        citiesfromAPI: [],
+        organizations: [],
+        withError: false
     };
   }
 
@@ -18,6 +24,16 @@ export class Form extends React.Component {
         newJob: {
           ...prevState.newJob,
           position: evt.target.value
+        }
+      })
+    );
+  }
+
+  handleNewJobDescription = (evt) => {
+    this.setState(prevState => ({
+        newJob: {
+          ...prevState.newJob,
+          description: evt.target.value
         }
       })
     );
@@ -62,17 +78,31 @@ export class Form extends React.Component {
     this.props.onNewJobSubmit(evt, this.state.newJob)
   }
 
+  componentDidMount() {
+    getCountries().then(res => this.setState({
+      countriesfromAPI: res
+    }))
+    getPlaces().then(res2 => this.setState({
+      citiesfromAPI: res2
+    }))
+    getOrganizations().then(res3 => this.setState({
+      organizations: res3
+    }))
+   }
+
   render() {
     return (
         <form onSubmit={this.handleNewJobSubmit}>
           <label>Name:</label>
           <input type="text" name="position" className="form-control" placeholder="Nombre del Puesto" required value={this.state.newJob.position} onChange={(e) => this.handleNewJobName(e)}></input>
+          <label>Description:</label>
+          <input type="text" name="description" className="form-control" placeholder="Descripción" required onChange={(e) => this.handleNewJobDescription(e)}></input>
           <label>Company:</label>
           <select className="form-control" onChange={(e) => this.handleNewJobCompany(e)}>
             {
-              this.props.empresas.map((empresa, index)=>{
-                if(empresa.ciudad==this.state.newJob.ciudad){
-                  return <option key={index} value={index}>{empresa.nombre}</option>
+              this.state.organizations.map((empresa, index)=>{
+                if(empresa.placeId==this.state.newJob.ciudad){
+                  return <option key={index} value={empresa.id}>{empresa.name}</option>
                 }
               })
             }
@@ -80,9 +110,9 @@ export class Form extends React.Component {
           <label>City:</label>
           <select className="form-control" onChange={(e) => this.handleNewJobCity(e)}>
             {
-              this.props.ciudades.map((ciudad, index)=>{
-                if(ciudad.pais==this.state.newJob.pais){
-                  return <option key={index} value={index}>{ciudad.nombre}</option>
+              this.state.citiesfromAPI.map((ciudad, index)=>{
+                if(ciudad.countrieId==this.state.newJob.pais){
+                  return <option key={index} value={ciudad.id}>{ciudad.name}</option>
                 }
               })
             }
@@ -90,8 +120,8 @@ export class Form extends React.Component {
           <label>Country:</label>
           <select className="form-control" onChange={(e) => this.handleNewJobCountry(e)}>
             {
-              this.props.paises.map(pais=>{
-                return <option key={pais}>{pais}</option>
+              this.state.countriesfromAPI.map((pais, id)=>{
+                return <option key={id} value={pais.id}>{pais.name}</option>
               })
             }
           </select>
@@ -99,6 +129,4 @@ export class Form extends React.Component {
         </form>
     );
   }
-
-  componentDidMount() {}
 }

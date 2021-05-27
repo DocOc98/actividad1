@@ -23,11 +23,6 @@ export class App extends React.Component {
     }
   }
 
-  deleteCountry = (nombre) => {
-    this.setState({
-      paises: this.state.paises.filter(pais => pais !== nombre)
-    });
-  }
   deleteCity = (nombre) => {
     this.setState({
       ciudades: this.state.ciudades.filter(ciudad => ciudad !== nombre)
@@ -39,11 +34,6 @@ export class App extends React.Component {
     });
   }
 
-  NewCountry = (evt, pais) => {
-    this.setState({
-      paises: [...this.state.paises, pais]
-    });
-  }
   NewCity = (evt, ciudad) => {
     this.setState({
       ciudades: [...this.state.ciudades, ciudad]
@@ -62,9 +52,9 @@ export class App extends React.Component {
         <Switch>
           
           <Route path="/" exact render={(props)=><ToDoList paises={this.state.paises} empresas={this.state.companias} ciudades={this.state.ciudades}></ToDoList>}></Route>
-          <Route path="/companies" exact render={(props)=> <Companies delete={this.deleteCompany} addCompany={this.NewCompany} empresas={this.state.companias} ciudades={this.state.ciudades} paises={this.state.paises}></Companies>}></Route>
-          <Route path="/cities" exact render={(props) => <Cities delete={this.deleteCity} addCity={this.NewCity} ciudades={this.state.ciudades} paises={this.state.paises}></Cities>}></Route>
-          <Route path="/countries" exact render={(props)=> <Countries delete={this.deleteCountry} addCountry={this.NewCountry} paises={this.state.paises}></Countries>}></Route>
+          <Route path="/companies" exact render={(props)=> <Companies></Companies>}></Route>
+          <Route path="/cities" exact render={(props) => <Cities></Cities>}></Route>
+          <Route path="/countries" exact render={(props)=> <Countries></Countries>}></Route>
           <Route component={NotFound}></Route>
         </Switch>
       </Router>

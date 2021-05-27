@@ -1,4 +1,5 @@
 import React from 'react';
+import { getPlaces, getCountries, getOrganizations, postOrganizations, deleteOrganizations } from '../clients/todoClient';
 
 export class Companies extends React.Component {
   constructor() {
@@ -6,9 +7,13 @@ export class Companies extends React.Component {
     this.state = {
         newCompany: {
             nombre: '',
-            ciudad: '',
-            pais: 0
-        }
+            ciudad: 1,
+            pais: 1
+        },
+        organizations: [],
+        countriesfromAPI: [],
+        citiesfromAPI: [],
+        withError: false
     };
   }
   handleCiudad = (e) => {
@@ -29,13 +34,6 @@ export class Companies extends React.Component {
     })
   );
   }
-  handleNewCompany = (evt) => {
-    evt.preventDefault();
-    if( this.state.newCompany.nombre.trim() === '' || this.state.newCompany.ciudad.trim() === ''){
-        return false;
-    }
-    this.props.addCompany(evt, this.state.newCompany)
-  }
   handlePais = (e) => {
     this.setState(prevState => ({
       newCompany: {
@@ -45,31 +43,50 @@ export class Companies extends React.Component {
     })
   );
   }
+  handleNewCompany = (evt) => {
+    evt.preventDefault();
+    /*if( this.state.newCompany.nombre.trim() === '' || this.state.newCompany.ciudad.trim() === ''){
+        return false;
+    }*/
+    //this.props.addCompany(evt, this.state.newCompany)
+    postOrganizations(this.state.newCompany);
+  }
+
+  deleteCompany= (data) =>{
+    deleteOrganizations(data);
+  }
+
+  componentDidMount() {
+    getCountries().then(res => this.setState({
+      countriesfromAPI: res
+    }));
+    getPlaces().then(res2 => this.setState({
+      citiesfromAPI: res2
+    }));
+    getOrganizations().then(res3 => this.setState({
+      organizations: res3
+    }));
+   }
+
+
   render() {
     return <div>
       <h3>Compañias</h3>
       <form onSubmit={this.handleNewCompany}>
-        <input type="text" value={this.state.newCompany.nombre} onChange={(e) => this.handleCompania(e)} placeholder="ingrese compania"></input><br></br>
+        <input type="text" onChange={(e) => this.handleCompania(e)} placeholder="ingrese compania"></input><br></br>
         <select onChange={(e) => this.handlePais(e)}>
           {
-            this.props.paises.map((pais, index)=>{
-              return <option key={index} value={index}>{pais}</option>
+            this.state.countriesfromAPI.map((pais, index)=>{
+              return <option key={index} value={pais.id}>{pais.name}</option>
             })
           }
         </select>
         <select onChange={(e) => this.handleCiudad(e)}>
           {
-            this.props.ciudades.map((ciudad, index)=>{
-              if(ciudad.pais==this.state.newCompany.pais){
-                return <option key={index}>{ciudad.nombre}</option>
+            this.state.citiesfromAPI.map((ciudad, index)=>{
+              if(ciudad.countrieId==this.state.newCompany.pais){
+                return <option key={index} value={ciudad.id}>{ciudad.name}</option>
               }
-              /*return <option key={index}>{ciudad.nombre} (
-              {
-                (()=>{
-                  return this.props.paises[ciudad.pais];
-                })()
-              })
-              </option>*/
             })
           }
         </select>
@@ -77,19 +94,21 @@ export class Companies extends React.Component {
       </form>
       <ul>
         {
-          this.props.empresas.map(empresa => {
-            return <li className="list-group-item mb-3" key={empresa}>
+          this.state.organizations.map((empresa, id) => {
+            return <li className="list-group-item mb-3" key={id}>
             <h5>
-              {empresa.nombre}
+              {empresa.name}
             </h5>
             <h6>
               { 
-                (()=>{
-                  return this.props.ciudades[empresa.ciudad].nombre;
-                })()
+                this.state.citiesfromAPI.map((ciudad)=>{
+                  if(ciudad.id == empresa.placeId){
+                    return <p>{ciudad.name}</p>
+                  }
+                })
               }
             </h6>
-            <button onClick={() => this.props.delete(empresa)} className="btn btn-danger">Eliminar</button>
+            <button onClick={() => this.deleteCompany(empresa)} className="btn btn-danger">Eliminar</button>
           </li>
           })
         }

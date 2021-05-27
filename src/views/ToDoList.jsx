@@ -1,8 +1,7 @@
 import React from 'react';
 import {List} from '../components/List'; 
 import {Form} from '../components/Form';
-import axios from 'axios';
-import { getData } from '../clients/todoClient'
+import { getData, postData, deleteData, getOrganizations } from '../clients/todoClient'
 
 export class ToDoList extends React.Component {
   constructor() {
@@ -12,22 +11,25 @@ export class ToDoList extends React.Component {
         {puesto: 'Frontend JS', empresa: 0, ciudad: 0, pais: 0},
       ], 
       jobsfromAPI: [],
+      organizations: [],
       withError: false
     };
   }
 
   onNewJob = (evt, newJob) => {
-    this.setState({
+    /*this.setState({
       //jobs: [...this.state.jobs, newJob]
       jobsfromAPI: [...this.state.jobsfromAPI, newJob]
-    });
+    });*/
+    postData(newJob.empresa);
   }
 
   deleteJob = (id_del) => {
-    this.setState({
+    /*this.setState({
       //jobs: this.state.jobs.filter((job, id) => id !== id_del)
       jobsfromAPI: this.state.jobsfromAPI.filter((job, id) => id !== id_del)
-    });
+    });*/
+    deleteData(id_del)
   }
 
   updateStateFromAPI = (datos) => {
@@ -56,6 +58,9 @@ export class ToDoList extends React.Component {
     getData().then(res => this.setState({
       jobsfromAPI: res
     }))
+    getOrganizations().then(res2 => this.setState({
+      organizations: res2
+    }))
    }
 
   render() {
@@ -66,7 +71,7 @@ export class ToDoList extends React.Component {
           { this.state.withError && <p>Error al conectarse con la API</p> }
             <h1>Puestos de Trabajo</h1>
             <div className="col-6">
-              <Form onNewJobSubmit={this.onNewJob} paises={this.props.paises} empresas={this.props.empresas} ciudades={this.props.ciudades}></Form>
+              <Form onNewJobSubmit={this.onNewJob}></Form>
             </div>
             <div className="col-6">
                 <ul>
@@ -75,7 +80,7 @@ export class ToDoList extends React.Component {
                     /*return <li className="list-group-item mb-3" key={id}>
                       {job.position}
                     </li>*/
-                    return <List key={id} elem={job} onDelete={() => this.deleteJob(id)} paises={this.props.paises} empresas={this.props.empresas} ciudades={this.props.ciudades}></List> 
+                    return <List key={id} elem={job} onDelete={() => this.deleteJob(job)} empresas={this.state.organizations}></List> 
                   })}
                 </ul>
             </div>
